@@ -1,2 +1,2 @@
-ARG VERSION=7.0.15-alpine
-FROM redis:${VERSION}
+ARG REDIS_VERSION=7.0.15-alpine
+FROM redis:${REDIS_VERSION}

@@ -10,7 +10,7 @@ services:
     build:
       context: ./mysql
       args:
-        VERSION: 8.0
+        MYSQL_VERSION: 8.0
     <<: *common
     volumes:
       - ./mysql/my.cnf:/root/.my.cnf:ro
@@ -26,7 +26,7 @@ services:
     build:
       context: ./postgres
       args:
-        VERSION: 15.5-alpine
+        POSTGRES_VERSION: 15.5-alpine
     <<: *common
     volumes:
       - ./postgres/.psqlrc:/root/.psqlrc:ro
@@ -42,7 +42,7 @@ services:
     build:
       context: ./redis
       args:
-        VERSION: 7.0.15-alpine
+        REDIS_VERSION: 7.0.15-alpine
     <<: *common
     volumes:
       - redis:/data
