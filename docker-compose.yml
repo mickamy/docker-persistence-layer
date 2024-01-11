@@ -1,0 +1,60 @@
+x-common: &common
+  env_file:
+    - .env
+  volumes:
+    - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    - history:/usr/local/hist
+
+services:
+  mysql:
+    image: docker-persistence-layer-mysql
+    build:
+      context: ./mysql
+    <<: *common
+    volumes:
+      - ./mysql/my.cnf:/root/.my.cnf:ro
+      - mysql:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: mysqladmin ping -h localhost
+      timeout: 20s
+      retries: 10
+  postgres:
+    image: docker-persistence-layer-postgres
+    build:
+      context: ./postgres
+      args:
+        VERSION: 15.5-alpine
+    <<: *common
+    volumes:
+      - ./postgres/.psqlrc:/root/.psqlrc:ro
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: pg_isready -U $DATABASE -h 127.0.0.1
+      interval: 5s
+
+  redis:
+    image: docker-persistence-layer-redis
+    build:
+      context: ./redis
+      args:
+        VERSION: 7.0.15-alpine
+    <<: *common
+    volumes:
+      - redis:/data
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  history:
+  mysql:
+  postgres:
+  redis:

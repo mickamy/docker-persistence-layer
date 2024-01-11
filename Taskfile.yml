@@ -1,0 +1,25 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - docker compose build --progress=plain
+  up:
+    cmds:
+      - docker compose up
+  up-d:
+    cmds:
+      - docker compose up -d
+  down:
+    cmds:
+      - docker compose down
+  restart:
+    cmds:
+      - docker compose restart {{.CLI_ARGS}} -no-d
+  clean:
+    cmds:
+      - docker rmi $(docker ps -a -q -f name=^docker-persistence-layer-*)
+      - docker volume rm -f $(docker volume ls -q -f name=^docker-persistence-layer-*)
+  logs:
+    cmds:
+      - docker compose logs --timestamps -f
