@@ -2,14 +2,15 @@ x-common: &common
   env_file:
     - .env
   volumes:
-    - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     - history:/usr/local/hist
 
 services:
   mysql:
-    image: docker-persistence-layer-mysql
+    image: mickamy/mysql
     build:
       context: ./mysql
+      args:
+        VERSION: 8.0
     <<: *common
     volumes:
       - ./mysql/my.cnf:/root/.my.cnf:ro
@@ -21,7 +22,7 @@ services:
       timeout: 20s
       retries: 10
   postgres:
-    image: docker-persistence-layer-postgres
+    image: mickamy/postgres
     build:
       context: ./postgres
       args:
@@ -37,7 +38,7 @@ services:
       interval: 5s
 
   redis:
-    image: docker-persistence-layer-redis
+    image: mickamy/redis
     build:
       context: ./redis
       args:

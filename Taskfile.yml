@@ -18,8 +18,17 @@ tasks:
       - docker compose restart {{.CLI_ARGS}} -no-d
   clean:
     cmds:
-      - docker rmi $(docker ps -a -q -f name=^docker-persistence-layer-*)
-      - docker volume rm -f $(docker volume ls -q -f name=^docker-persistence-layer-*)
+      - docker rmi $(docker ps -a -q -f name=^docker-persistence-layer-*) || true
+      - docker volume rm -f $(docker volume ls -q -f name=^docker-persistence-layer-*) || true
   logs:
     cmds:
-      - docker compose logs --timestamps -f
+      - docker compose logs -f
+  clean-and-up:
+    cmds:
+      - task: down
+      - task: clean
+      - task: build
+      - task: up
+  pull:
+    cmds:
+      - docker compose pull

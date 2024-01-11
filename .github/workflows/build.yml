@@ -54,7 +54,7 @@ jobs:
       - name: Build and push mysql image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./mysql
           push: true
           file: ./mysql/Dockerfile
           tags: ${{ env.UNAME }}/mysql:${{ env.TAG_NAME }}
@@ -65,7 +65,7 @@ jobs:
       - name: Build and push postgres image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./postgres
           push: true
           file: ./postgres/Dockerfile
           tags: ${{ env.UNAME }}/postgres:${{ env.TAG_NAME }}
@@ -76,7 +76,7 @@ jobs:
       - name: Build and push redis image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./redis
           push: true
           file: ./redis/Dockerfile
           tags: ${{ env.UNAME }}/redis:${{ env.TAG_NAME }}

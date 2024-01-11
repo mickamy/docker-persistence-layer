@@ -1,8 +1,4 @@
-FROM debian:bullseye-20231218-slim
+ARG VERSION=8.0
+FROM mysql:${VERSION}
 
-RUN apt-get update && \
-	apt-get install -y default-mysql-server tzdata && \
-    ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
-    echo $TZ > /etc/timezone && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY ./docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
